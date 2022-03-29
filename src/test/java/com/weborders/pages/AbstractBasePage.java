@@ -24,7 +24,7 @@ public abstract class AbstractBasePage {
 
     public String getPageSubtitleText(){
         BrowserUtilities.waitForPageToLoad(10);
-        return pageSubtitle.getText();
+        return pageSubtitle.getText().trim();
     }
 
     public String getPageLogoText(){
