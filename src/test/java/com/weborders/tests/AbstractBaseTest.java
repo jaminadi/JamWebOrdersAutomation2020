@@ -15,6 +15,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
 import java.io.IOException;
+import static org.testng.Assert.*;
 import java.security.cert.Extension;
 
 public abstract class AbstractBaseTest {
