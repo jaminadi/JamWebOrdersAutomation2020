@@ -20,7 +20,7 @@ import java.security.cert.Extension;
 
 public abstract class AbstractBaseTest {
 
-        protected WebDriver driver = Driver.getDriver();
+        protected WebDriver driver;
 
         //making it static helps with NullPointerException issue
         protected static ExtentReports extentReports;
@@ -50,6 +50,7 @@ public abstract class AbstractBaseTest {
 
         @BeforeMethod
         public void setup(){
+            driver = Driver.getDriver();
             driver.get(ConfigurationReader.getProperty("url"));
             driver.manage().window().maximize();
         }
