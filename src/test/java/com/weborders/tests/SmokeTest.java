@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 public class SmokeTest extends AbstractBaseTest {
 
+
     @Test(dataProvider = "smokeTestData")
     public void verifyAllProductsPage(String component, String expectedPageSubTitle) {
         extentTest = extentReports.createTest("Verify " + component);
