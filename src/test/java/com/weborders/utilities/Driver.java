@@ -8,7 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class Driver {
 
-    private static WebDriver driver;
+    private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
 
     //we make it private, so no one can create an object of Driver class
     //everyone should call static getter method instead
@@ -18,7 +18,7 @@ public class Driver {
 
     public static WebDriver getDriver() {
         //if driver does not exist, create it
-        if (driver == null) {
+        if (driverPool.get() == null) {
             //specify browser type in configuration.properties file
             String browser = ConfigurationReader.getProperty("browser").toLowerCase();
             switch (browser) {
@@ -26,31 +26,31 @@ public class Driver {
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--start-maximized");
-                    driver = new ChromeDriver(chromeOptions);
+                    driverPool.set(new ChromeDriver(chromeOptions));
                     break;
                 case "chromeheadless":
                     //to run chrome without interface (headless mode)
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions options = new ChromeOptions();
                     options.setHeadless(true);
-                    driver = new ChromeDriver(options);
+                    driverPool.set(new ChromeDriver(options));
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver();
+                    driverPool.set(new FirefoxDriver());
                     break;
                 default:
                     throw new RuntimeException("Wrong browser name!");
             }
 
         }
-        return driver;
+        return driverPool.get();
     }
 
     public static void closeDriver() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
+        if (driverPool != null) {
+            driverPool.get().quit();
+            driverPool.remove();
         }
     }
 
